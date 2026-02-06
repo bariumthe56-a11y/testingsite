@@ -19,7 +19,7 @@
             font-family: 'Poppins', sans-serif;
             background-color: #000;
             color: #fff;
-            overflow-x: hidden;
+            overflow: hidden;
             user-select: none;
             touch-action: manipulation;
         }
@@ -35,7 +35,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             text-align: center;
             transition: opacity 1s ease, transform 1s ease;
             z-index: 10;
@@ -49,9 +48,10 @@
         
         /* Start screen */
         #start-screen {
-            background-color: #000;
+            background: linear-gradient(135deg, #000000 0%, #1a001a 100%);
             z-index: 100;
             cursor: pointer;
+            padding: 20px;
         }
         
         .touch-to-continue {
@@ -74,6 +74,7 @@
         #name-screen {
             background: linear-gradient(135deg, #1a001a 0%, #330033 100%);
             cursor: pointer;
+            padding: 20px;
         }
         
         .heart-icon {
@@ -100,6 +101,7 @@
         #memory-screen {
             background: linear-gradient(135deg, #330033 0%, #660066 100%);
             cursor: pointer;
+            padding: 20px;
         }
         
         .memory-text {
@@ -112,6 +114,8 @@
         /* Location screen */
         #location-screen {
             background-color: #000;
+            display: block;
+            padding: 0;
         }
         
         .location-container {
@@ -122,91 +126,59 @@
         }
         
         .location-header {
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 20;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            position: relative;
+            flex-shrink: 0;
         }
         
         .location-title {
-            font-size: 28px;
+            font-size: 24px;
             color: #ff5e8e;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         
         .location-instructions {
-            font-size: 16px;
+            font-size: 14px;
             color: #ffb6c1;
+            margin-bottom: 10px;
         }
         
         .streetview-container {
             flex: 1;
             position: relative;
             overflow: hidden;
+            background: #000;
         }
         
-        iframe {
+        #streetview-iframe {
             width: 100%;
             height: 100%;
             border: none;
-        }
-        
-        .heart-marker {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: #ff5e8e;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px rgba(255, 94, 142, 0.8);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-            animation: pulse 2s infinite;
-            border: 2px solid white;
+            top: 0;
+            left: 0;
         }
         
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 94, 142, 0.8); }
-            50% { box-shadow: 0 0 30px rgba(255, 94, 142, 1); }
-        }
-        
-        .heart-marker:hover {
-            transform: translate(-50%, -50%) scale(1.3);
-            box-shadow: 0 0 30px rgba(255, 94, 142, 1);
-        }
-        
-        .heart-marker.found {
-            opacity: 0.5;
-            transform: translate(-50%, -50%) scale(0.8);
-            pointer-events: none;
-            animation: none;
-        }
-        
-        .heart-marker i {
-            color: white;
-            font-size: 24px;
-        }
-        
+        /* Message overlay - now positioned over Google Maps */
         .message-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            z-index: 10;
+            z-index: 30;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.5s ease;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.85);
         }
         
         .message-overlay.active {
@@ -215,111 +187,197 @@
         }
         
         .message-content {
-            max-width: 700px;
+            max-width: 600px;
             width: 90%;
-            background: linear-gradient(135deg, rgba(102, 0, 102, 0.9), rgba(51, 0, 51, 0.9));
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(135deg, rgba(102, 0, 102, 0.95), rgba(51, 0, 51, 0.95));
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
             border: 3px solid #ff5e8e;
             position: relative;
-            animation: slideUp 0.5s ease;
+            animation: slideUp 0.4s ease;
         }
         
         @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
+            from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         
         .close-message-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 94, 142, 0.2);
             border: none;
             color: #ffb6c1;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            z-index: 5;
         }
         
         .close-message-btn:hover {
-            background-color: rgba(255, 94, 142, 0.2);
-            color: #ff5e8e;
+            background-color: rgba(255, 94, 142, 0.4);
+            color: #fff;
             transform: rotate(90deg);
         }
         
         .message-title {
-            font-size: 24px;
+            font-size: 22px;
             color: #ffb6c1;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-family: 'Dancing Script', cursive;
-        }
-        
-        .message-text {
-            font-size: 18px;
-            line-height: 1.7;
-            color: #fff;
-            margin-bottom: 30px;
             text-align: center;
         }
         
-        .continue-btn {
-            background: linear-gradient(to right, #ff5e8e, #ff3d7a);
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            font-size: 18px;
+        .message-text {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        .message-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .message-btn {
+            padding: 12px 30px;
+            font-size: 16px;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(255, 94, 142, 0.4);
-            display: block;
-            margin: 0 auto;
+            border: none;
+            min-width: 140px;
         }
         
-        .continue-btn:hover {
+        .continue-message-btn {
+            background: linear-gradient(to right, #ff5e8e, #ff3d7a);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 94, 142, 0.4);
+        }
+        
+        .continue-message-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255, 94, 142, 0.6);
         }
         
-        .continue-btn:active {
-            transform: translateY(-1px);
+        .close-message-btn-small {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffb6c1;
+            border: 1px solid rgba(255, 94, 142, 0.3);
         }
         
-        .continue-btn:disabled {
-            background: linear-gradient(to right, #666, #777);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        .close-message-btn-small:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            transform: translateY(-3px);
         }
         
-        .progress-container {
+        /* Heart markers - positioned over Google Maps */
+        .heart-marker {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #ff5e8e, #ff3d7a);
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
-            gap: 12px;
-            flex-wrap: wrap;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 25px rgba(255, 94, 142, 0.9);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 25;
+            animation: pulse 2s infinite;
+            border: 3px solid white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 94, 142, 0.8), 0 0 40px rgba(255, 94, 142, 0.4); 
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 94, 142, 1), 0 0 60px rgba(255, 94, 142, 0.6); 
+            }
+        }
+        
+        .heart-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 35px rgba(255, 94, 142, 1);
+        }
+        
+        .heart-marker.found {
+            opacity: 0.4;
+            transform: translate(-50%, -50%) scale(0.7);
+            pointer-events: none;
+            animation: none;
+            background: #888;
+            border-color: #aaa;
+        }
+        
+        .heart-marker i {
+            color: white;
+            font-size: 26px;
+        }
+        
+        /* Progress bar - positioned over Google Maps */
+        .progress-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 25;
+            padding: 0 20px;
+        }
+        
+        .progress-container {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 50px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 94, 142, 0.5);
+            backdrop-filter: blur(5px);
+            max-width: 500px;
+            width: 100%;
         }
         
         .progress-text {
             color: #ffb6c1;
-            font-size: 16px;
-            margin-right: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .progress-dots {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            justify-content: center;
         }
         
         .progress-dot {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background-color: #444;
             transition: all 0.3s;
@@ -335,6 +393,48 @@
             background-color: #ffb6c1;
         }
         
+        /* Next location button - appears when all messages found */
+        .next-location-btn {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            background: linear-gradient(to right, #ff5e8e, #ff3d7a);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            box-shadow: 0 5px 20px rgba(255, 94, 142, 0.6);
+            z-index: 25;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        
+        .next-location-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            animation: slideInUp 0.5s ease;
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .next-location-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 94, 142, 0.8);
+        }
+        
         /* Final screen */
         #final-screen {
             background: linear-gradient(135deg, #000033 0%, #330033 100%);
@@ -345,17 +445,17 @@
         
         .love-letter-container {
             max-width: 800px;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             padding: 60px;
             border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
             border: 3px solid #ff5e8e;
             animation: fadeIn 1.5s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
         
         .love-letter-header {
@@ -388,14 +488,14 @@
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(0, 0, 0, 0.9);
             border-radius: 50px;
             padding: 12px 25px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 94, 142, 0.5);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 94, 142, 0.6);
             backdrop-filter: blur(5px);
         }
         
@@ -425,6 +525,33 @@
             font-weight: 500;
         }
         
+        /* Location navigation (dots at the top) */
+        .location-nav {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 20;
+        }
+        
+        .location-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .location-dot.active {
+            background-color: #ff5e8e;
+            transform: scale(1.3);
+        }
+        
+        .location-dot.visited {
+            background-color: #ffb6c1;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .recipient-name {
@@ -436,7 +563,11 @@
             }
             
             .location-title {
-                font-size: 22px;
+                font-size: 20px;
+            }
+            
+            .location-instructions {
+                font-size: 13px;
             }
             
             .love-letter-header {
@@ -445,16 +576,43 @@
             
             .love-letter-content {
                 font-size: 18px;
+                line-height: 1.7;
             }
             
             .heart-marker {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
             }
             
             .message-content {
-                padding: 30px 25px;
-                margin: 15px;
+                padding: 25px 20px;
+            }
+            
+            .message-btn {
+                padding: 10px 20px;
+                min-width: 120px;
+                font-size: 15px;
+            }
+            
+            .message-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .next-location-btn {
+                bottom: 100px;
+                right: 50%;
+                transform: translateX(50%) translateY(20px);
+                font-size: 15px;
+                padding: 12px 25px;
+            }
+            
+            .next-location-btn.visible {
+                transform: translateX(50%) translateY(0);
+            }
+            
+            .progress-container {
+                padding: 10px 20px;
             }
             
             .love-letter-container {
@@ -483,7 +641,7 @@
             
             .love-letter-content {
                 font-size: 16px;
-                line-height: 1.7;
+                line-height: 1.6;
             }
             
             .love-letter-container {
@@ -491,16 +649,30 @@
             }
             
             .heart-marker {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 45px;
             }
             
             .heart-marker i {
-                font-size: 20px;
+                font-size: 22px;
             }
             
             .message-content {
-                padding: 25px 20px;
+                padding: 20px 15px;
+            }
+            
+            .next-location-btn {
+                bottom: 110px;
+                width: 90%;
+                justify-content: center;
+            }
+            
+            .progress-container {
+                padding: 8px 15px;
+            }
+            
+            .progress-text {
+                font-size: 13px;
             }
             
             .music-player {
@@ -561,15 +733,15 @@
                 <h1 id="location-title" class="location-title">Our First Date</h1>
                 <p class="location-instructions">
                     <i class="fas fa-heart" style="color: #ff5e8e;"></i> 
-                    Click on the heart markers to reveal hidden messages. Find all messages to continue.
+                    Click on the glowing hearts to reveal hidden messages
                 </p>
-                <div class="progress-container">
-                    <span class="progress-text">Memories found:</span>
-                    <!-- Progress dots will be added here by JavaScript -->
+                <div class="location-nav" id="location-nav">
+                    <!-- Location dots will be added by JavaScript -->
                 </div>
             </div>
             <div class="streetview-container">
-                <div id="streetview"></div>
+                <iframe id="streetview-iframe"></iframe>
+                
                 <!-- Heart markers will be added here by JavaScript -->
                 
                 <!-- Message overlay -->
@@ -582,7 +754,25 @@
                         <p id="message-text" class="message-text">
                             This is where we first met. I was so nervous, but the moment I saw you, I knew something special was beginning.
                         </p>
-                        <button id="continue-message-btn" class="continue-btn">Continue</button>
+                        <div class="message-actions">
+                            <button id="continue-message-btn" class="message-btn continue-message-btn">Continue</button>
+                            <button id="close-message-btn-small" class="message-btn close-message-btn-small">Close</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Next location button -->
+                <button id="next-location-btn" class="next-location-btn">
+                    <i class="fas fa-arrow-right"></i> Next Location
+                </button>
+                
+                <!-- Progress overlay -->
+                <div class="progress-overlay">
+                    <div class="progress-container">
+                        <span class="progress-text">Memories found:</span>
+                        <div class="progress-dots" id="progress-dots">
+                            <!-- Progress dots will be added by JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -659,9 +849,9 @@ Yours`
                     "We talked for hours without realizing how much time had passed. Time flies when I'm with you."
                 ],
                 heartPositions: [
-                    { x: 30, y: 50 },  // Percentage positions
-                    { x: 70, y: 30 },
-                    { x: 50, y: 70 }
+                    { x: 25, y: 45 },  // Percentage positions
+                    { x: 65, y: 35 },
+                    { x: 45, y: 65 }
                 ]
             },
             {
@@ -673,9 +863,9 @@ Yours`
                     "Remember when we got caught in the rain here? We laughed so hard as we ran for shelter."
                 ],
                 heartPositions: [
-                    { x: 20, y: 60 },
+                    { x: 30, y: 55 },
                     { x: 60, y: 40 },
-                    { x: 80, y: 70 }
+                    { x: 75, y: 65 }
                 ]
             },
             {
@@ -688,8 +878,8 @@ Yours`
                 ],
                 heartPositions: [
                     { x: 40, y: 40 },
-                    { x: 75, y: 60 },
-                    { x: 25, y: 75 }
+                    { x: 70, y: 55 },
+                    { x: 30, y: 70 }
                 ]
             },
             {
@@ -701,9 +891,9 @@ Yours`
                     "This is where we promised to always find time for sunsets together, no matter how busy life gets."
                 ],
                 heartPositions: [
-                    { x: 30, y: 30 },
-                    { x: 65, y: 50 },
-                    { x: 45, y: 80 }
+                    { x: 35, y: 35 },
+                    { x: 60, y: 50 },
+                    { x: 50, y: 75 }
                 ]
             },
             {
@@ -715,15 +905,15 @@ Yours`
                     "My favorite place in the world is wherever you are, but this comes pretty close."
                 ],
                 heartPositions: [
-                    { x: 50, y: 40 },
-                    { x: 35, y: 65 },
-                    { x: 70, y: 75 }
+                    { x: 45, y: 40 },
+                    { x: 40, y: 65 },
+                    { x: 65, y: 70 }
                 ]
             }
         ];
         
         // ================================
-        // ENHANCED APPLICATION CODE
+        // PROFESSIONAL APPLICATION CODE
         // ================================
         
         // State variables
@@ -732,6 +922,7 @@ Yours`
         let foundMessages = 0;
         let musicPlaying = false;
         let isFirstInteraction = true;
+        let heartMarkers = [];
         
         // DOM Elements
         const screens = [
@@ -744,16 +935,20 @@ Yours`
         
         const recipientNameElement = document.getElementById('recipient-name');
         const locationTitle = document.getElementById('location-title');
-        const streetviewContainer = document.getElementById('streetview');
+        const streetviewIframe = document.getElementById('streetview-iframe');
         const messageOverlay = document.getElementById('message-overlay');
         const messageTitle = document.getElementById('message-title');
         const messageText = document.getElementById('message-text');
         const continueMessageBtn = document.getElementById('continue-message-btn');
         const closeMessageBtn = document.getElementById('close-message-btn');
+        const closeMessageBtnSmall = document.getElementById('close-message-btn-small');
+        const nextLocationBtn = document.getElementById('next-location-btn');
         const loveLetterHeader = document.getElementById('love-letter-header');
         const loveLetterContent = document.getElementById('love-letter-content');
         const musicToggle = document.getElementById('music-toggle');
         const musicInfo = document.querySelector('.music-info');
+        const locationNav = document.getElementById('location-nav');
+        const progressDots = document.getElementById('progress-dots');
         
         // Audio - Using a reliable royalty-free music source
         const backgroundMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/02/22/audio_d5e2e1c7a3.mp3?filename=romantic-piano-soft-amp-sad-11080.mp3');
@@ -769,7 +964,7 @@ Yours`
             loveLetterHeader.textContent = loveMessage.header;
             loveLetterContent.textContent = loveMessage.content;
             
-            // Setup click handlers
+            // Setup event listeners
             setupEventListeners();
             
             // Show first screen
@@ -794,26 +989,35 @@ Yours`
             // Message buttons
             continueMessageBtn.addEventListener('click', continueToNext);
             closeMessageBtn.addEventListener('click', closeMessage);
+            closeMessageBtnSmall.addEventListener('click', closeMessage);
+            
+            // Next location button
+            nextLocationBtn.addEventListener('click', goToNextLocation);
             
             // Music toggle
             musicToggle.addEventListener('click', toggleMusic);
             
-            // Keyboard support for closing messages
+            // Keyboard support
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && messageOverlay.classList.contains('active')) {
                     closeMessage();
+                }
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    if (nextLocationBtn.classList.contains('visible')) {
+                        goToNextLocation();
+                    }
                 }
             });
         }
         
         // Setup music with user interaction requirement
         function setupMusic() {
-            // Start music on first user interaction (for browser autoplay policies)
+            // Start music on first user interaction
             const startMusicOnInteraction = () => {
                 if (isFirstInteraction && !musicPlaying) {
                     playMusic();
                     isFirstInteraction = false;
-                    // Remove these listeners after first interaction
                     document.removeEventListener('click', startMusicOnInteraction);
                     document.removeEventListener('touchstart', startMusicOnInteraction);
                 }
@@ -822,7 +1026,6 @@ Yours`
             document.addEventListener('click', startMusicOnInteraction);
             document.addEventListener('touchstart', startMusicOnInteraction);
             
-            // Update music info text
             musicInfo.textContent = "Click to play music";
         }
         
@@ -834,7 +1037,7 @@ Yours`
                 musicInfo.textContent = "Romantic Music";
                 musicToggle.title = "Pause music";
             }).catch(e => {
-                console.log("Music play failed, waiting for user interaction:", e);
+                console.log("Music play failed, waiting for user interaction");
                 musicInfo.textContent = "Click to play music";
                 musicToggle.title = "Play music";
             });
@@ -860,12 +1063,10 @@ Yours`
         
         // Show specific screen
         function showScreen(screenIndex) {
-            // Hide all screens
             screens.forEach(screen => {
                 screen.classList.add('hidden');
             });
             
-            // Show selected screen
             screens[screenIndex].classList.remove('hidden');
             currentScreen = screenIndex;
         }
@@ -878,22 +1079,29 @@ Yours`
             const location = locations[locationIndex];
             locationTitle.textContent = location.name;
             
-            // Clear previous content
-            streetviewContainer.innerHTML = '';
+            // Set Street View URL with fullscreen parameters
+            streetviewIframe.src = location.streetViewUrl + "&output=embed&hl=en&ui=off";
             
-            // Create iframe for Street View
-            const iframe = document.createElement('iframe');
-            iframe.src = location.streetViewUrl;
-            iframe.allowFullscreen = true;
-            iframe.loading = 'lazy';
-            iframe.referrerPolicy = 'no-referrer-when-downgrade';
-            streetviewContainer.appendChild(iframe);
+            // Clear previous heart markers
+            clearHeartMarkers();
             
-            // Add heart markers after iframe loads
+            // Add heart markers
             setTimeout(() => {
                 addHeartMarkers(location);
                 createProgressDots(location.messages.length);
+                createLocationNav();
+                updateNextButton();
             }, 1500);
+        }
+        
+        // Clear heart markers
+        function clearHeartMarkers() {
+            heartMarkers.forEach(marker => {
+                if (marker && marker.parentNode) {
+                    marker.parentNode.removeChild(marker);
+                }
+            });
+            heartMarkers = [];
         }
         
         // Add heart markers to the location
@@ -906,34 +1114,48 @@ Yours`
                 heartMarker.innerHTML = '<i class="fas fa-heart"></i>';
                 heartMarker.dataset.index = index;
                 
-                // Add click handler
                 heartMarker.addEventListener('click', () => {
                     showMessage(location.messages[index], index);
                     heartMarker.classList.add('found');
                 });
                 
-                streetviewContainer.appendChild(heartMarker);
+                streetviewIframe.parentNode.appendChild(heartMarker);
+                heartMarkers.push(heartMarker);
             });
         }
         
-        // Create progress dots for messages
+        // Create progress dots
         function createProgressDots(totalMessages) {
-            const progressContainer = document.querySelector('.progress-container');
-            // Keep the progress text
-            const progressText = progressContainer.querySelector('.progress-text');
-            progressContainer.innerHTML = '';
-            progressContainer.appendChild(progressText);
+            progressDots.innerHTML = '';
             
             for (let i = 0; i < totalMessages; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'progress-dot';
                 if (i === 0) dot.classList.add('active');
-                progressContainer.appendChild(dot);
+                progressDots.appendChild(dot);
             }
+            
+            updateProgressText();
         }
         
-        // Update progress dots
-        function updateProgressDots() {
+        // Create location navigation dots
+        function createLocationNav() {
+            locationNav.innerHTML = '';
+            
+            locations.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'location-dot';
+                if (index === currentLocation) {
+                    dot.classList.add('active');
+                } else if (index < currentLocation) {
+                    dot.classList.add('visited');
+                }
+                locationNav.appendChild(dot);
+            });
+        }
+        
+        // Update progress
+        function updateProgress() {
             const dots = document.querySelectorAll('.progress-dot');
             dots.forEach((dot, index) => {
                 dot.classList.remove('active');
@@ -944,9 +1166,26 @@ Yours`
                 }
             });
             
-            // Update progress text
+            updateProgressText();
+            updateNextButton();
+        }
+        
+        // Update progress text
+        function updateProgressText() {
             const progressText = document.querySelector('.progress-text');
             progressText.textContent = `Memories found: ${foundMessages}/${locations[currentLocation].messages.length}`;
+        }
+        
+        // Update next button visibility
+        function updateNextButton() {
+            if (foundMessages >= locations[currentLocation].messages.length) {
+                nextLocationBtn.classList.add('visible');
+                nextLocationBtn.innerHTML = currentLocation < locations.length - 1 
+                    ? '<i class="fas fa-arrow-right"></i> Next Location' 
+                    : '<i class="fas fa-heart"></i> Read Love Letter';
+            } else {
+                nextLocationBtn.classList.remove('visible');
+            }
         }
         
         // Show a message
@@ -957,15 +1196,13 @@ Yours`
             
             // Update progress
             foundMessages++;
-            updateProgressDots();
+            updateProgress();
             
-            // Enable continue button if all messages found
+            // Update button text
             if (foundMessages >= locations[currentLocation].messages.length) {
-                continueMessageBtn.disabled = false;
-                continueMessageBtn.textContent = "Continue to Next Location";
+                continueMessageBtn.textContent = "Continue";
             } else {
-                continueMessageBtn.disabled = true;
-                continueMessageBtn.textContent = `Find ${locations[currentLocation].messages.length - foundMessages} more message${locations[currentLocation].messages.length - foundMessages > 1 ? 's' : ''}`;
+                continueMessageBtn.textContent = "Next Memory";
             }
         }
         
@@ -974,19 +1211,27 @@ Yours`
             messageOverlay.classList.remove('active');
         }
         
-        // Continue to next location or final screen
+        // Continue to next message or location
         function continueToNext() {
             closeMessage();
             
-            // If all messages found, go to next location or final screen
+            // If all messages found and user clicks continue, go to next location
             if (foundMessages >= locations[currentLocation].messages.length) {
-                if (currentLocation < locations.length - 1) {
-                    // Load next location
-                    loadLocation(currentLocation + 1);
-                } else {
-                    // All locations done, show final screen
-                    showScreen(4);
-                }
+                goToNextLocation();
+            }
+        }
+        
+        // Go to next location or final screen
+        function goToNextLocation() {
+            closeMessage();
+            
+            if (currentLocation < locations.length - 1) {
+                // Load next location
+                currentLocation++;
+                loadLocation(currentLocation);
+            } else {
+                // All locations done, show final screen
+                showScreen(4);
             }
         }
         
