@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testing!</title>
+    <title>Our Love Story Journey</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -17,37 +17,37 @@
             font-family: 'Poppins', sans-serif;
             background-color: #000;
             color: #fff;
-            overflow: hidden;
             height: 100vh;
             width: 100vw;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         #app {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: all 1s ease;
         }
 
-        /* Initial Screen Styles */
+        /* ===== INITIAL SCREEN ===== */
         #initialScreen {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            transition: opacity 2s ease;
+            transition: opacity 1s ease;
         }
 
         .reveal-text {
             text-align: center;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 2s ease;
+            transition: all 1.5s ease;
         }
 
         .revealed {
@@ -68,12 +68,12 @@
             font-size: 3.5rem;
             color: #fff;
             letter-spacing: 3px;
+            margin-bottom: 50px;
         }
 
         .touch-to-continue {
             position: absolute;
             bottom: 50px;
-            left: 0;
             width: 100%;
             text-align: center;
             font-size: 1.2rem;
@@ -87,74 +87,90 @@
             50% { opacity: 1; }
         }
 
-        /* Street View Container */
-        #streetviewContainer {
+        /* ===== LOCATION SCREENS ===== */
+        .location-screen {
             position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 1s ease;
+            display: none;
         }
 
-        .streetview-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Continue Button */
-        #continueButton {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #ff5e8e, #ff2e63);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 50;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            box-shadow: 0 5px 20px rgba(255, 94, 142, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #continueButton.show {
+        .location-screen.active {
             opacity: 1;
-            transform: translateY(0);
+            display: block;
         }
 
-        #continueButton:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 94, 142, 0.7);
+        .streetview-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
 
-        /* Hidden Messages */
-        .hidden-message {
+        .streetview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ===== MESSAGE MARKERS ===== */
+        .message-marker {
             position: absolute;
-            background: rgba(0, 0, 0, 0.9);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 94, 142, 0.9);
+            border: 3px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(255, 94, 142, 0.8);
+            animation: heartbeat 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .message-marker:hover {
+            transform: scale(1.2);
+        }
+
+        .message-marker i {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .message-marker.revealed {
+            background: rgba(76, 175, 80, 0.9);
+            animation: none;
+        }
+
+        /* ===== MESSAGE POPUPS ===== */
+        .message-popup {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
             border: 2px solid #ff5e8e;
             border-radius: 15px;
             padding: 25px;
             width: 320px;
             color: white;
-            z-index: 50;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.5s ease;
+            z-index: 20;
             box-shadow: 0 0 30px rgba(255, 94, 142, 0.5);
             backdrop-filter: blur(5px);
+            display: none;
         }
 
-        .hidden-message.active {
-            opacity: 1;
-            transform: scale(1);
+        .message-popup.active {
+            display: block;
+            animation: popupAppear 0.5s ease;
+        }
+
+        @keyframes popupAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .message-header {
@@ -168,7 +184,7 @@
 
         .message-title {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #ff5e8e;
         }
 
@@ -188,37 +204,39 @@
         .message-content {
             font-size: 1.1rem;
             line-height: 1.6;
+            margin-bottom: 15px;
         }
 
-        .message-icon {
-            font-size: 1.2rem;
-            margin-right: 8px;
-            color: #ff5e8e;
-        }
-
-        /* Location Progress */
-        #locationProgress {
+        /* ===== PROGRESS & NAVIGATION ===== */
+        #progressIndicator {
             position: absolute;
             top: 20px;
             right: 20px;
             background: rgba(0, 0, 0, 0.7);
             padding: 15px;
             border-radius: 10px;
-            z-index: 40;
+            z-index: 50;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 94, 142, 0.3);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        #progressIndicator.show {
+            opacity: 1;
         }
 
         .progress-title {
             font-size: 1.2rem;
-            margin-bottom: 10px;
             color: #ff5e8e;
+            margin-bottom: 10px;
             text-align: center;
         }
 
         .progress-dots {
             display: flex;
-            gap: 15px;
+            gap: 12px;
+            justify-content: center;
         }
 
         .progress-dot {
@@ -226,7 +244,7 @@
             height: 12px;
             border-radius: 50%;
             background-color: #555;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .progress-dot.active {
@@ -238,21 +256,58 @@
             background-color: #4CAF50;
         }
 
-        /* Final Screen */
+        #continueButton {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff5e8e, #ff2e63);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(255, 94, 142, 0.5);
+        }
+
+        #continueButton.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #continueButton:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 94, 142, 0.7);
+        }
+
+        /* ===== FINAL SCREEN ===== */
         #finalScreen {
             position: absolute;
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #000000, #1a1a2e, #16213e);
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            opacity: 0;
-            transition: opacity 2s ease;
             padding: 20px;
             text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        #finalScreen.active {
+            display: flex;
+            opacity: 1;
         }
 
         #loveMessage {
@@ -273,16 +328,7 @@
             color: #f0f0f0;
         }
 
-        .heartbeat {
-            animation: heartbeat 1.5s infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Music Player */
+        /* ===== MUSIC PLAYER ===== */
         #musicPlayer {
             position: absolute;
             bottom: 20px;
@@ -328,149 +374,44 @@
             font-size: 1rem;
             color: #ccc;
             max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
-        /* Message Marker */
-        .message-marker {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 94, 142, 0.9);
-            border: 3px solid white;
-            cursor: pointer;
-            z-index: 20;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 20px rgba(255, 94, 142, 0.8);
-            animation: markerPulse 2s infinite;
-            transition: transform 0.3s;
+        /* ===== ANIMATIONS ===== */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .message-marker:hover {
-            transform: scale(1.3);
+        .heartbeat {
+            animation: heartbeat 1.5s infinite;
         }
 
-        .message-marker i {
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        @keyframes markerPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 94, 142, 0.8); }
-            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 94, 142, 1); }
-        }
-
-        /* Location Title */
-        #locationTitle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 25px;
-            border-radius: 10px;
-            z-index: 40;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 94, 142, 0.3);
-            max-width: 300px;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.5s ease;
-        }
-
-        #locationTitle.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .location-name {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #ff5e8e;
-            margin-bottom: 5px;
-        }
-
-        .location-description {
-            font-size: 1rem;
-            color: #ccc;
-        }
-
-        /* Click Indicator */
-        .click-indicator {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,94,142,0.8) 0%, rgba(255,94,142,0) 70%);
-            pointer-events: none;
-            z-index: 30;
-            opacity: 0;
-        }
-
-        .click-indicator.active {
-            animation: clickPulse 0.8s;
-        }
-
-        @keyframes clickPulse {
-            0% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.7; }
-            100% { opacity: 0; transform: scale(2); }
-        }
-
-        /* Responsive */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             #nameText { font-size: 3.5rem; }
             #memoryText { font-size: 2.5rem; }
             #loveMessage { font-size: 2.8rem; }
-            .hidden-message { width: 280px; padding: 20px; }
+            .message-popup { width: 280px; padding: 20px; }
             #continueButton { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 1rem; }
-            #locationTitle { left: 10px; right: 10px; max-width: none; }
+            .message-marker { width: 50px; height: 50px; }
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- Initial Screen -->
+        <!-- INITIAL SCREEN -->
         <div id="initialScreen">
-            <div class="reveal-text" id="nameText">My Love</div>
+            <div class="reveal-text" id="nameText">Sarah</div>
             <div class="reveal-text" id="memoryText">Remember when...</div>
             <div class="touch-to-continue">
                 <i class="fas fa-hand-point-up"></i> Touch anywhere to begin our journey
             </div>
         </div>
 
-        <!-- Street View Container -->
-        <div id="streetviewContainer">
-            <!-- Street View iframes will be inserted here -->
-            
-            <!-- Location Title -->
-            <div id="locationTitle">
-                <div class="location-name" id="currentLocationName">First Date</div>
-                <div class="location-description" id="currentLocationDesc">Click the hearts to reveal memories</div>
-            </div>
-            
-            <!-- Location Progress -->
-            <div id="locationProgress">
-                <div class="progress-title">Our Journey</div>
-                <div class="progress-dots" id="progressDots">
-                    <!-- Progress dots will be added by JavaScript -->
-                </div>
-            </div>
+        <!-- LOCATION SCREENS (will be created dynamically) -->
+        <div id="locationsContainer"></div>
 
-            <!-- Continue Button -->
-            <button id="continueButton">
-                <i class="fas fa-arrow-right"></i> Continue Journey
-            </button>
-
-            <!-- Hidden Messages Container -->
-            <div id="messagesContainer"></div>
-        </div>
-
-        <!-- Final Screen -->
+        <!-- FINAL SCREEN -->
         <div id="finalScreen">
             <div id="loveMessage">To My Forever Valentine</div>
             <div id="personalMessage">Every moment with you is a beautiful memory I cherish. From our first date to this very day, my love for you grows stronger. You are my everything.</div>
@@ -479,7 +420,18 @@
             </div>
         </div>
 
-        <!-- Music Player -->
+        <!-- PROGRESS INDICATOR -->
+        <div id="progressIndicator">
+            <div class="progress-title">Our Journey</div>
+            <div class="progress-dots" id="progressDots"></div>
+        </div>
+
+        <!-- CONTINUE BUTTON -->
+        <button id="continueButton">
+            <i class="fas fa-arrow-right"></i> Continue Journey
+        </button>
+
+        <!-- MUSIC PLAYER -->
         <div id="musicPlayer">
             <div class="music-controls">
                 <button id="playPauseBtn" class="music-btn">
@@ -489,129 +441,117 @@
                     <i class="fas fa-volume-up"></i>
                 </button>
             </div>
-            <div class="song-title" id="songTitle">Your Song</div>
+            <div class="song-title" id="songTitle">Our Love Story</div>
         </div>
     </div>
 
-    <!-- Instructions for GitHub Pages (not shown to users) -->
-    <div id="githubInstructions" style="display: none; color: white; background: #333; padding: 20px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
-        <h2>GitHub Pages Instructions:</h2>
-        <ol>
-            <li>Save this file as <strong>index.html</strong></li>
-            <li>Create a new GitHub repository</li>
-            <li>Upload index.html to the repository</li>
-            <li>Go to Settings → Pages → Select "main" branch → Save</li>
-            <li>Your site will be live at: https://[your-username].github.io/[repository-name]</li>
-        </ol>
-        <button onclick="document.getElementById('githubInstructions').style.display='none'">Hide Instructions</button>
-    </div>
-
     <script>
-        // Configuration Data - Customize this for your Valentine!
+        // ===== CONFIGURATION =====
         const CONFIG = {
-            // Recipient information
-            recipientName: "My Love",
+            recipientName: "Sarah",
             
-            // Locations with REAL Street View embed URLs
+            // 5 LOCATIONS WITH STREET VIEW URLS AND MESSAGES
             locations: [
                 {
+                    id: 1,
                     name: "First Date",
-                    description: "Where our story began...",
+                    description: "Where it all began...",
                     streetViewUrl: "https://www.google.com/maps/embed?pb=!4v1770406081763!6m8!1m7!1sCAoSHENJQUJJaENIY1BWMjNHMktjNzRPd2hUbVpMV1M.!2m2!1d51.13272457277133!2d-114.1531582653321!3f85.55054078049412!4f8.006536409915839!5f0.4000000000000002",
                     messages: [
-                        { x: 30, y: 40, title: "First Glance", content: "I remember seeing you for the first time right here. My heart skipped a beat." },
-                        { x: 70, y: 60, title: "That Smile", content: "When you smiled at me, I knew this was something special." }
+                        { x: 30, y: 40, title: "First Glance", content: "I remember seeing you for the first time right here. My heart skipped a beat when our eyes met." },
+                        { x: 70, y: 60, title: "That Smile", content: "When you smiled at me across the table, I knew this was something special. Your smile still lights up my world." }
                     ]
                 },
                 {
+                    id: 2,
                     name: "Beach Sunset",
-                    description: "Watching the sun set together",
+                    description: "Golden hour with you",
                     streetViewUrl: "https://www.google.com/maps/embed?pb=!4v1700000000000!6m8!1m7!1sCAoSLEFGMVFpcFBjVnNYcnY0alJNTEp2UmU3UnJWT2lRSmdjUEt5d3pSc3Jxa0Z6!2m2!1d34.0195!2d-118.4912!3f345.12!4f5.23!5f0.7820865974627469",
                     messages: [
-                        { x: 40, y: 50, title: "Golden Hour", content: "The sunset painted the sky, but you were the most beautiful view." },
-                        { x: 60, y: 30, title: "Hand in Hand", content: "Walking with you felt like we were the only two people in the world." }
+                        { x: 40, y: 50, title: "Golden Hour", content: "The sunset painted the sky in hues of orange and pink, but you were the most beautiful view that evening." },
+                        { x: 60, y: 30, title: "Hand in Hand", content: "Walking with you along the shore, hand in hand, felt like we were the only two people in the world." },
+                        { x: 20, y: 70, title: "Whispered Promises", content: "You whispered promises to me as the waves crashed, and I believed every word." }
                     ]
                 },
                 {
-                    name: "Mountain View",
-                    description: "Our weekend getaway",
+                    id: 3,
+                    name: "Mountain Getaway",
+                    description: "Our weekend escape",
                     streetViewUrl: "https://www.google.com/maps/embed?pb=!4v1700000000001!6m8!1m7!1sCAoSLEFGMVFpcE5fV0F2TDFrN3JicVJtblV4WXlNblBfczZEYVJtT0QyWVF4S0x6!2m2!1d39.7392!2d-104.9903!3f120.45!4f10.12!5f0.7820865974627469",
                     messages: [
-                        { x: 50, y: 40, title: "Top of the World", content: "With you by my side, I felt like we could conquer anything." },
-                        { x: 20, y: 70, title: "Quiet Moments", content: "The silence between us wasn't empty - it was full of understanding." }
+                        { x: 50, y: 40, title: "Top of the World", content: "With you by my side at this viewpoint, I felt like we could conquer anything together." },
+                        { x: 20, y: 70, title: "Quiet Moments", content: "The comfortable silence between us wasn't empty - it was full of understanding and love." },
+                        { x: 80, y: 20, title: "Adventure Buddy", content: "Every hike, every challenge feels like an adventure when I'm with you." }
                     ]
                 },
                 {
+                    id: 4,
                     name: "Our Coffee Shop",
-                    description: "Saturday morning traditions",
+                    description: "Saturday morning rituals",
                     streetViewUrl: "https://www.google.com/maps/embed?pb=!4v1700000000002!6m8!1m7!1sCAoSLEFGMVFpcE5fQ19SLVRBNVhIR0hUYzhVX1VWOFJZR0hJZ0hMYzFZcWViT0dF!2m2!1d47.6062!2d-122.3321!3f75.89!4f3.45!5f0.7820865974627469",
                     messages: [
-                        { x: 40, y: 30, title: "Morning Ritual", content: "Your latte, my cappuccino, and hours of conversation I'll always treasure." },
-                        { x: 70, y: 60, title: "The Corner Table", content: "This table witnessed our dreams, our laughter, and our growing love." }
+                        { x: 40, y: 30, title: "Morning Ritual", content: "Your latte, my cappuccino, and hours of conversation that I'll always treasure. These mornings are my favorite." },
+                        { x: 70, y: 60, title: "The Corner Table", content: "This table witnessed our dreams, our laughter, and our growing love. It will always be 'our spot' to me." },
+                        { x: 25, y: 75, title: "Rainy Days", content: "Even on the gloomiest days, being here with you made everything bright and beautiful." }
                     ]
                 },
                 {
+                    id: 5,
                     name: "Home",
                     description: "Where love lives",
                     streetViewUrl: "https://www.google.com/maps/embed?pb=!4v1700000000003!6m8!1m7!1sCAoSLEFGMVFpcE5fSGZ0Y0Y2cWJxa0JqQzJqWl9zUjVrR2hJQ2NqeHJqT0VfLXZR!2m2!1d37.7749!2d-122.4194!3f280.34!4f2.67!5f0.7820865974627469",
                     messages: [
-                        { x: 50, y: 50, title: "Our Sanctuary", content: "This isn't just a place - it's where we built our life together." },
-                        { x: 30, y: 20, title: "Future Dreams", content: "I can't wait to fill this home with even more beautiful memories with you." }
+                        { x: 50, y: 50, title: "Our Sanctuary", content: "This isn't just a place - it's where we built our life together, filled with love, laughter, and countless beautiful moments." },
+                        { x: 30, y: 20, title: "Future Dreams", content: "I can't wait to fill this home with even more beautiful memories with you. Every day is a new chapter in our love story." },
+                        { x: 70, y: 80, title: "My Happy Place", content: "Anywhere with you feels like home, but this place will always be special - it's where our dreams became reality." }
                     ]
                 }
             ],
             
-            // Final love message
+            // FINAL MESSAGES
             loveMessage: "To My Forever Valentine",
-            personalMessage: "Every moment with you is a beautiful memory I cherish. From our first date to this very day, my love for you grows stronger. You are my everything.",
+            personalMessage: "Every moment with you is a beautiful memory I cherish. From our first date to this very day, my love for you grows stronger. You are my everything, my always, and my forever.",
             
-            // Music configuration - Using a reliable, royalty-free romantic song
+            // MUSIC
             music: {
                 url: "https://assets.mixkit.co/music/preview/mixkit-romantic-sunset-687.mp3",
                 title: "Romantic Sunset",
                 autoplay: true,
                 volume: 0.3
-            },
-            
-            // Animation speeds
-            initialRevealDelay: 800,
-            textRevealDelay: 1500,
-            locationTransitionDelay: 1000,
-            finalRevealDelay: 2000
+            }
         };
 
-        // Application State
+        // ===== APPLICATION STATE =====
         let state = {
-            currentStep: 0, // 0 = initial, 1 = name revealed, 2 = memory text, 3+ = locations
-            currentLocationIndex: 0,
-            revealedMessages: 0,
-            totalMessages: CONFIG.locations.reduce((sum, loc) => sum + loc.messages.length, 0),
+            currentStep: 0, // 0 = initial, 1 = name shown, 2 = memory shown, 3+ = locations
+            currentLocationIndex: -1,
+            revealedMessages: [],
             audio: null,
             isPlaying: false,
             userInteracted: false
         };
 
-        // DOM Elements
+        // ===== DOM ELEMENTS =====
+        const app = document.getElementById('app');
         const initialScreen = document.getElementById('initialScreen');
-        const streetviewContainer = document.getElementById('streetviewContainer');
+        const locationsContainer = document.getElementById('locationsContainer');
         const finalScreen = document.getElementById('finalScreen');
         const nameText = document.getElementById('nameText');
         const memoryText = document.getElementById('memoryText');
         const loveMessage = document.getElementById('loveMessage');
         const personalMessage = document.getElementById('personalMessage');
+        const progressIndicator = document.getElementById('progressIndicator');
         const progressDots = document.getElementById('progressDots');
-        const messagesContainer = document.getElementById('messagesContainer');
         const continueButton = document.getElementById('continueButton');
-        const locationTitle = document.getElementById('locationTitle');
-        const currentLocationName = document.getElementById('currentLocationName');
-        const currentLocationDesc = document.getElementById('currentLocationDesc');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const muteBtn = document.getElementById('muteBtn');
         const songTitle = document.getElementById('songTitle');
 
-        // Initialize the application
+        // ===== INITIALIZATION =====
         function init() {
-            // Set recipient name and messages
+            console.log("Initializing Valentine's Journey...");
+            
+            // Set config values
             nameText.textContent = CONFIG.recipientName;
             loveMessage.textContent = CONFIG.loveMessage;
             personalMessage.textContent = CONFIG.personalMessage;
@@ -620,27 +560,31 @@
             // Initialize progress dots
             initProgressDots();
             
-            // Initialize audio - FIXED VERSION
-            initAudio();
+            // Initialize music
+            initMusic();
+            
+            // Create location screens
+            createLocationScreens();
             
             // Set up event listeners
-            document.addEventListener('click', handleClick);
-            continueButton.addEventListener('click', handleContinue);
-            playPauseBtn.addEventListener('click', togglePlayPause);
-            muteBtn.addEventListener('click', toggleMute);
+            setupEventListeners();
             
-            // Start with initial screen
+            // Show initial screen
             showInitialScreen();
+            
+            console.log("Initialization complete!");
         }
 
         function initProgressDots() {
             progressDots.innerHTML = '';
+            // Create dots for each location + final screen
             for (let i = 0; i < CONFIG.locations.length + 1; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'progress-dot';
-                if (i === 0) dot.classList.add('active');
+                dot.dataset.index = i;
                 progressDots.appendChild(dot);
             }
+            updateProgressDots();
         }
 
         function updateProgressDots() {
@@ -650,333 +594,384 @@
                 
                 if (index < state.currentLocationIndex) {
                     dot.classList.add('completed');
-                } else if (index === state.currentLocationIndex && state.currentStep >= 3) {
+                } else if (index === state.currentLocationIndex && state.currentLocationIndex >= 0) {
                     dot.classList.add('active');
                 }
+                
+                // Final screen
+                if (state.currentStep === 'final' && index === dots.length - 1) {
+                    dot.classList.add('completed', 'active');
+                }
+            });
+        }
+
+        function createLocationScreens() {
+            CONFIG.locations.forEach((location, index) => {
+                const screen = document.createElement('div');
+                screen.className = 'location-screen';
+                screen.id = `location-${index}`;
+                
+                screen.innerHTML = `
+                    <div class="streetview-container">
+                        <iframe 
+                            class="streetview-iframe" 
+                            src="${location.streetViewUrl}"
+                            allowfullscreen 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        
+                        <div class="location-title" style="
+                            position: absolute;
+                            top: 20px;
+                            left: 20px;
+                            background: rgba(0,0,0,0.7);
+                            padding: 15px 25px;
+                            border-radius: 10px;
+                            backdrop-filter: blur(5px);
+                            border: 1px solid rgba(255,94,142,0.3);
+                            max-width: 300px;
+                        ">
+                            <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #ff5e8e; margin-bottom: 5px;">
+                                ${location.name}
+                            </h2>
+                            <p style="color: #ccc; font-size: 1rem;">
+                                ${location.description}
+                            </p>
+                        </div>
+                        
+                        <div class="messages-container" id="messages-${index}"></div>
+                    </div>
+                `;
+                
+                locationsContainer.appendChild(screen);
+                
+                // Create message markers for this location
+                setTimeout(() => createMessageMarkers(index, location.messages), 100);
+            });
+        }
+
+        function createMessageMarkers(locationIndex, messages) {
+            const container = document.getElementById(`messages-${locationIndex}`);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            messages.forEach((message, index) => {
+                const marker = document.createElement('div');
+                marker.className = 'message-marker';
+                marker.style.left = `${message.x}%`;
+                marker.style.top = `${message.y}%`;
+                marker.dataset.location = locationIndex;
+                marker.dataset.message = index;
+                marker.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                marker.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showMessagePopup(locationIndex, index, message, marker);
+                });
+                
+                container.appendChild(marker);
+            });
+        }
+
+        function showMessagePopup(locationIndex, messageIndex, message, marker) {
+            // Check if already revealed
+            const messageKey = `${locationIndex}-${messageIndex}`;
+            if (state.revealedMessages.includes(messageKey)) return;
+            
+            // Mark as revealed
+            state.revealedMessages.push(messageKey);
+            marker.classList.add('revealed');
+            
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'message-popup active';
+            popup.style.left = `calc(${marker.style.left} - 160px)`;
+            popup.style.top = `calc(${marker.style.top} - 200px)`;
+            
+            // Adjust if near edges
+            let left = parseInt(marker.style.left);
+            let top = parseInt(marker.style.top);
+            if (left < 20) popup.style.left = '20px';
+            if (left > 80) popup.style.left = 'calc(100% - 340px)';
+            if (top < 20) popup.style.top = '20px';
+            if (top > 80) popup.style.top = 'calc(100% - 300px)';
+            
+            popup.innerHTML = `
+                <div class="message-header">
+                    <div class="message-title">${message.title}</div>
+                    <button class="message-close">&times;</button>
+                </div>
+                <div class="message-content">
+                    <i class="fas fa-heart" style="color:#ff5e8e; margin-right:8px;"></i>
+                    ${message.content}
+                </div>
+            `;
+            
+            // Add close button handler
+            const closeBtn = popup.querySelector('.message-close');
+            closeBtn.addEventListener('click', () => {
+                popup.remove();
             });
             
-            // If we're at final screen, activate last dot
-            if (state.currentStep === 4) {
-                dots[dots.length - 1].classList.add('completed', 'active');
+            // Add to container
+            const container = document.getElementById(`messages-${locationIndex}`);
+            container.appendChild(popup);
+            
+            // Auto-close after 8 seconds
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    popup.remove();
+                }
+            }, 8000);
+            
+            // Check if all messages in this location are revealed
+            checkLocationCompletion(locationIndex);
+        }
+
+        function checkLocationCompletion(locationIndex) {
+            const location = CONFIG.locations[locationIndex];
+            const totalMessages = location.messages.length;
+            const revealedInLocation = state.revealedMessages.filter(key => 
+                key.startsWith(`${locationIndex}-`)
+            ).length;
+            
+            if (revealedInLocation >= totalMessages) {
+                // All messages revealed - show continue button
+                continueButton.style.display = 'flex';
+                setTimeout(() => {
+                    continueButton.classList.add('show');
+                }, 100);
             }
         }
 
-        function initAudio() {
+        function initMusic() {
             state.audio = new Audio(CONFIG.music.url);
             state.audio.volume = CONFIG.music.volume;
             state.audio.loop = true;
             
-            // Store the original source
-            state.audioSource = CONFIG.music.url;
-            
-            // Modern browsers require user interaction before playing audio
-            const playAudioOnInteraction = () => {
-                if (!state.userInteracted && CONFIG.music.autoplay) {
-                    state.audio.play().then(() => {
-                        state.isPlaying = true;
-                        updatePlayPauseButton();
-                        console.log("Music started playing");
-                    }).catch(e => {
-                        console.log("Autoplay prevented, user needs to interact first:", e);
-                        // Show a hint to the user
-                        showMusicHint();
-                    });
-                    state.userInteracted = true;
+            // Play/pause button
+            playPauseBtn.addEventListener('click', () => {
+                if (!state.audio.src) {
+                    state.audio.src = CONFIG.music.url;
                 }
-            };
+                
+                if (state.isPlaying) {
+                    state.audio.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    state.audio.play().then(() => {
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(e => {
+                        console.log("Audio play failed:", e);
+                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    });
+                }
+                state.isPlaying = !state.isPlaying;
+            });
             
-            // Listen for user interactions
-            document.addEventListener('click', playAudioOnInteraction, { once: true });
-            document.addEventListener('touchstart', playAudioOnInteraction, { once: true });
-        }
-
-        function showMusicHint() {
-            const hint = document.createElement('div');
-            hint.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(255, 94, 142, 0.9);
-                color: white;
-                padding: 10px 20px;
-                border-radius: 25px;
-                z-index: 1000;
-                font-size: 0.9rem;
-                animation: fadeInOut 3s ease;
-            `;
-            hint.innerHTML = '<i class="fas fa-music"></i> Click the play button for music';
-            document.body.appendChild(hint);
+            // Mute button
+            muteBtn.addEventListener('click', () => {
+                if (state.audio) {
+                    state.audio.muted = !state.audio.muted;
+                    muteBtn.innerHTML = state.audio.muted ? 
+                        '<i class="fas fa-volume-mute"></i>' : 
+                        '<i class="fas fa-volume-up"></i>';
+                }
+            });
             
-            setTimeout(() => {
-                hint.remove();
-            }, 3000);
-        }
-
-        function togglePlayPause() {
-            if (!state.audio.src) {
-                state.audio.src = state.audioSource;
-            }
-            
-            if (state.isPlaying) {
-                state.audio.pause();
-            } else {
-                state.audio.play().catch(e => {
-                    console.log("Play failed:", e);
-                    // If play fails, try setting src again
-                    state.audio.src = state.audioSource;
-                    state.audio.play();
-                });
-            }
-            state.isPlaying = !state.isPlaying;
-            updatePlayPauseButton();
-        }
-
-        function toggleMute() {
-            if (state.audio) {
-                state.audio.muted = !state.audio.muted;
-                const icon = muteBtn.querySelector('i');
-                icon.className = state.audio.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+            // Try autoplay
+            if (CONFIG.music.autoplay) {
+                const tryPlay = () => {
+                    if (!state.userInteracted) {
+                        state.audio.play().then(() => {
+                            state.isPlaying = true;
+                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        }).catch(() => {
+                            // Autoplay blocked, wait for user interaction
+                        });
+                        state.userInteracted = true;
+                    }
+                };
+                
+                document.addEventListener('click', tryPlay, { once: true });
+                document.addEventListener('touchstart', tryPlay, { once: true });
             }
         }
 
-        function updatePlayPauseButton() {
-            const icon = playPauseBtn.querySelector('i');
-            icon.className = state.isPlaying ? 'fas fa-pause' : 'fas fa-play';
-        }
-
-        function showInitialScreen() {
-            state.currentStep = 0;
-            initialScreen.style.display = 'flex';
-            initialScreen.style.opacity = '1';
-            streetviewContainer.style.opacity = '0';
-            finalScreen.style.opacity = '0';
-            continueButton.classList.remove('show');
-            locationTitle.classList.remove('show');
+        function setupEventListeners() {
+            // Main click handler for initial screens
+            app.addEventListener('click', handleMainClick);
             
-            // Reset text opacity
-            nameText.classList.remove('revealed');
-            memoryText.classList.remove('revealed');
+            // Continue button
+            continueButton.addEventListener('click', handleContinue);
+            
+            // Also allow touch events
+            app.addEventListener('touchstart', handleMainClick);
         }
 
-        function handleClick(event) {
+        function handleMainClick(e) {
             // Don't process clicks on interactive elements
-            if (event.target.closest('.music-btn') || 
-                event.target.closest('.message-close') ||
-                event.target.closest('.message-marker') ||
-                event.target.closest('#continueButton')) {
+            if (e.target.closest('.music-btn') || 
+                e.target.closest('.message-marker') ||
+                e.target.closest('.message-close') ||
+                e.target.closest('#continueButton')) {
                 return;
             }
             
-            // Show click indicator
-            showClickIndicator(event.clientX, event.clientY);
-            
             switch(state.currentStep) {
-                case 0: // Initial screen - reveal name
+                case 0:
                     revealName();
                     state.currentStep = 1;
                     break;
                     
-                case 1: // Initial screen - reveal "remember when"
+                case 1:
                     revealMemoryText();
                     state.currentStep = 2;
                     break;
                     
-                case 2: // Initial screen - transition to first location
-                    transitionToLocation(0);
+                case 2:
+                    startLocations();
                     state.currentStep = 3;
                     break;
                     
-                case 3: // In location - clicking on background does nothing
-                    // Only message markers are clickable
+                default:
+                    // Clicking on location background does nothing
                     break;
             }
         }
 
-        function handleContinue() {
-            if (state.currentStep === 3) { // In a location
-                // Check if all messages in current location are revealed
-                const currentLocation = CONFIG.locations[state.currentLocationIndex];
-                const markers = document.querySelectorAll('.message-marker');
-                const revealedMarkers = Array.from(markers).filter(m => m.classList.contains('revealed'));
-                
-                if (revealedMarkers.length >= currentLocation.messages.length) {
-                    // All messages revealed, move to next location
-                    if (state.currentLocationIndex < CONFIG.locations.length - 1) {
-                        state.currentLocationIndex++;
-                        transitionToLocation(state.currentLocationIndex);
-                    } else {
-                        // All locations completed
-                        showFinalScreen();
-                    }
-                } else {
-                    // Not all messages revealed yet
-                    showMessageHint();
-                }
-            }
-        }
-
-        function showMessageHint() {
-            const hint = document.createElement('div');
-            hint.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(255, 94, 142, 0.9);
-                color: white;
-                padding: 10px 20px;
-                border-radius: 25px;
-                z-index: 1000;
-                font-size: 0.9rem;
-                animation: fadeInOut 3s ease;
-            `;
-            hint.innerHTML = '<i class="fas fa-heart"></i> Find and click all the hearts first!';
-            document.body.appendChild(hint);
-            
-            setTimeout(() => {
-                hint.remove();
-            }, 3000);
-        }
-
-        function showClickIndicator(x, y) {
-            const indicator = document.createElement('div');
-            indicator.className = 'click-indicator active';
-            indicator.style.left = `${x - 50}px`;
-            indicator.style.top = `${y - 50}px`;
-            document.getElementById('app').appendChild(indicator);
-            
-            setTimeout(() => {
-                indicator.remove();
-            }, 800);
-        }
-
         function revealName() {
-            setTimeout(() => {
-                nameText.classList.add('revealed');
-            }, CONFIG.initialRevealDelay);
+            nameText.classList.add('revealed');
+            updateProgressDots();
         }
 
         function revealMemoryText() {
             setTimeout(() => {
                 memoryText.classList.add('revealed');
-            }, CONFIG.textRevealDelay);
+                updateProgressDots();
+            }, 800);
         }
 
-        function transitionToLocation(locationIndex) {
-            // Hide continue button during transition
-            continueButton.classList.remove('show');
-            locationTitle.classList.remove('show');
-            
-            // Fade out current view
-            if (locationIndex === 0) {
-                initialScreen.style.opacity = '0';
-            } else {
-                streetviewContainer.style.opacity = '0';
-            }
-            
-            // Update progress
-            state.currentLocationIndex = locationIndex;
-            updateProgressDots();
-            
-            // Reset message count for this location
-            state.revealedMessages = CONFIG.locations.slice(0, locationIndex)
-                .reduce((sum, loc) => sum + loc.messages.length, 0);
-            
-            // Load location after delay
+        function startLocations() {
+            // Hide initial screen
+            initialScreen.style.opacity = '0';
             setTimeout(() => {
-                if (locationIndex === 0) {
-                    initialScreen.style.display = 'none';
-                }
-                loadLocation(locationIndex);
-            }, CONFIG.locationTransitionDelay);
-        }
-
-        function loadLocation(locationIndex) {
-            const location = CONFIG.locations[locationIndex];
-            
-            // Update location title
-            currentLocationName.textContent = location.name;
-            currentLocationDesc.textContent = location.description;
-            
-            // Clear previous messages and markers
-            clearMarkersAndMessages();
-            
-            // Create Street View iframe
-            const iframe = document.createElement('iframe');
-            iframe.className = 'streetview-frame';
-            iframe.src = location.streetViewUrl;
-            iframe.allowFullscreen = true;
-            iframe.loading = 'lazy';
-            iframe.referrerPolicy = 'no-referrer-when-downgrade';
-            
-            // Clear and add iframe
-            streetviewContainer.innerHTML = '';
-            streetviewContainer.appendChild(iframe);
-            
-            // Add back the UI elements
-            streetviewContainer.appendChild(locationTitle);
-            streetviewContainer.appendChild(document.getElementById('locationProgress'));
-            streetviewContainer.appendChild(continueButton);
-            streetviewContainer.appendChild(messagesContainer);
-            
-            // Create message markers after a delay (to ensure iframe is loaded)
-            setTimeout(() => {
-                createMessageMarkers(location);
-                
-                // Show location title and continue button
-                setTimeout(() => {
-                    locationTitle.classList.add('show');
-                    continueButton.classList.add('show');
-                }, 500);
+                initialScreen.style.display = 'none';
             }, 1000);
             
-            // Fade in street view container
-            setTimeout(() => {
-                streetviewContainer.style.opacity = '1';
-                finalScreen.style.opacity = '0';
-            }, 500);
+            // Show progress indicator
+            progressIndicator.classList.add('show');
+            
+            // Show first location
+            state.currentLocationIndex = 0;
+            showLocation(state.currentLocationIndex);
+            updateProgressDots();
         }
 
-        function createMessageMarkers(location) {
-            location.messages.forEach((message, index) => {
-                // Create marker element
-                const marker = document.createElement('div');
-                marker.className = 'message-marker';
-                marker.style.left = `${message.x}%`;
-                marker.style.top = `${message.y}%`;
-                marker.innerHTML = '<i class="fas fa-heart"></i>';
-                marker.dataset.messageIndex = index;
-                
-                // Add click event
-                marker.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showMessage(message, marker);
-                });
-                
-                // Add to container
-                streetviewContainer.appendChild(marker);
+        function showLocation(index) {
+            // Hide all locations
+            document.querySelectorAll('.location-screen').forEach(screen => {
+                screen.classList.remove('active');
             });
+            
+            // Hide continue button
+            continueButton.classList.remove('show');
+            continueButton.style.display = 'none';
+            
+            // Show selected location
+            const locationScreen = document.getElementById(`location-${index}`);
+            if (locationScreen) {
+                locationScreen.classList.add('active');
+                
+                // Reset message markers for this location
+                const markers = locationScreen.querySelectorAll('.message-marker');
+                markers.forEach(marker => {
+                    const locIndex = marker.dataset.location;
+                    const msgIndex = marker.dataset.message;
+                    const messageKey = `${locIndex}-${msgIndex}`;
+                    
+                    if (state.revealedMessages.includes(messageKey)) {
+                        marker.classList.add('revealed');
+                    } else {
+                        marker.classList.remove('revealed');
+                    }
+                });
+            }
+            
+            updateProgressDots();
         }
 
-        function showMessage(message, marker) {
-            // Check if already revealed
-            if (marker.classList.contains('revealed')) return;
+        function handleContinue() {
+            // Hide continue button
+            continueButton.classList.remove('show');
             
-            // Create message element
-            const messageEl = document.createElement('div');
-            messageEl.className = 'hidden-message';
-            messageEl.style.left = `calc(${marker.style.left} - 160px)`;
-            messageEl.style.top = `calc(${marker.style.top} - 150px)`;
+            // Check if we have more locations
+            if (state.currentLocationIndex < CONFIG.locations.length - 1) {
+                // Go to next location
+                state.currentLocationIndex++;
+                showLocation(state.currentLocationIndex);
+            } else {
+                // All locations completed - show final screen
+                showFinalScreen();
+            }
             
-            // Adjust position if near edges
-            const adjustPosition = (pos, max) => {
-                let num = parseInt(pos);
-                if (num < 10) return '10px';
-                if (num > max - 10) return `calc(100% - ${max}px)`;
-                return pos;
-            };
+            updateProgressDots();
+        }
+
+        function showFinalScreen() {
+            // Hide current location
+            document.querySelectorAll('.location-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
             
-            messageEl.style.left = adjustPosition(messageEl.style.left, 340);
-            messageEl.style.top = adjustPosition(messageEl.style.top, 300);
+            // Hide progress and continue button
+            progressIndicator.classList.remove('show');
+            continueButton.classList.remove('show');
+            continueButton.style.display = 'none';
             
+            // Show final screen
+            setTimeout(() => {
+                finalScreen.classList.add('active');
+                state.currentStep = 'final';
+                updateProgressDots();
+            }, 1000);
+        }
+
+        function showInitialScreen() {
+            // Reset state
+            state.currentStep = 0;
+            state.currentLocationIndex = -1;
+            state.revealedMessages = [];
+            
+            // Show initial screen
+            initialScreen.style.display = 'flex';
+            initialScreen.style.opacity = '1';
+            
+            // Hide other screens
+            finalScreen.classList.remove('active');
+            document.querySelectorAll('.location-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Hide progress and continue button
+            progressIndicator.classList.remove('show');
+            continueButton.classList.remove('show');
+            continueButton.style.display = 'none';
+            
+            // Reset text animations
+            nameText.classList.remove('revealed');
+            memoryText.classList.remove('revealed');
+            
+            updateProgressDots();
+        }
+
+        // Make restart function available globally
+        window.restartJourney = showInitialScreen;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
